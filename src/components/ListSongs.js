@@ -1,13 +1,19 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Songs } from "../Context";
 
 export default function ListSongs() {
-  const { DataSongs } = useContext(Songs);
-  const { idSong, setidSong } = useState(0);
-  const handlePlaySong = (song) => {};
+  const { DataSongs, handleSetSong, song } = useContext(Songs);
+  const [idSong, setidSong] = useState(0);
+  const handlePlaySong = (idSong) => {
+    setidSong(idSong);
+    handleSetSong(idSong);
+  };
+  useEffect(() => {
+    setidSong(song.id);
+  }, [song]);
   return (
-    <div className="col-span-2 overflow-y-scroll">
-      <table className="table-auto w-full ">
+    <div className="col-span-2  overflow-y-scroll">
+      <table className="table-auto w-full">
         <thead className="text-white h-12">
           <tr>
             <th className="w-[10%]">#</th>
@@ -22,10 +28,10 @@ export default function ListSongs() {
           {DataSongs.map((song, index) => (
             <tr
               key={index}
-              className="bg-slate-800 h-12 text-gray-500 hover:bg-slate-600"
+              className={`bg-slate-800 h-12 text-gray-500 hover:bg-slate-600 ${
+                idSong === song.id && "bg-slate-600 text-teal-400"
+              }`}
               onClick={() => handlePlaySong(song.id)}
-              // ${
-              //   idSong === song.id && "bg-slate-600 text-teal-400"}
             >
               <td className="text-center">{index + 1}</td>
               <td>{song.name}</td>
